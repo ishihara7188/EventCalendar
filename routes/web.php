@@ -16,5 +16,5 @@ Route::get('/', function () {
 });
 
 Route::resource('/events', 'EventController');
-
 Route::get('/addevent', 'EventController@display');
+Route::get('/displayevent', 'EventController@show');
