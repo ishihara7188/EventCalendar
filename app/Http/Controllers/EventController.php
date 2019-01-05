@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Event;
 use MaddHatter\LaravelFullcalendar\Facades\Calendar;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
     public function index()
     {
-        $events = Event::all();
+        $sched = new Event;
+        $events = $sched->getUserId(Auth::id());
         $event = [];
         
         foreach($events as $row){
@@ -28,19 +30,15 @@ class EventController extends Controller
         return view ('eventpage', compact('events', 'calendar'));
     }
 
-    
 
-    public function create()
+    public function add()
     {
-        //
-    }
-
-
-    public function display()
-    {
-        return view('addevent');
+        $sched = new Event;
+        $user_id = $sched->getUserId(Auth::id());
+        return view('addevent')->with('user_id');
     }
     
+
     public function store(Request $request)
     {
         $this->validate($request,[
@@ -51,20 +49,25 @@ class EventController extends Controller
         ]);
 
         $events = new Event;
+        $events->user_id = Auth::id();
         $events->title = $request->title;
         $events->color = $request->color;
         $events->start_date = $request->start_date;
         $events->end_date = $request->end_date;
         $events->save();
 
-        return redirect('events')->with('success', 'Events Added');
+        return redirect('/events')->with('success', '予定を追加しました');
     }
 
     
-    public function show()
+    public function show(/* $events */)
     {
-        $events = Event::all();
-        return view ('display')->with('events', $events);
+        // $events = Event::all();
+        $sched = new Event;
+        $events = $sched->getUserId(Auth::id());
+        // $sched = Event::find($events);
+        // $events = $sched->getUserId(Auth::id());
+        return view ('display', ['events'=>$events]);
     }
 
     
@@ -91,8 +94,8 @@ class EventController extends Controller
         $events->end_date = $request->end_date;
         $events->save();
 
-        echo '<script> alert ("Date updated") </script>';
-        return redirect('events')->with('success', 'Data Updated');
+        echo '<script> alert ("success") </script>';
+        return redirect('events')->with('success', '予定を変更しました');
     }
 
     
@@ -100,7 +103,7 @@ class EventController extends Controller
     {
         $events = Event::find($id);
         $events->delete();
-        return redirect ('events')->with('success', 'Data Deleted');
+        return redirect ('events')->with('success', '予定を削除しました');
 
     }
 }

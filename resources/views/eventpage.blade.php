@@ -1,36 +1,29 @@
 @extends('layout')
 @section('content')
-<h2>Event Calendar</h2>
-<div class="row">
-    <a href="/addevent" class="btn btn-success">Add Event</a>
-    <a href="/displayevent" class="btn btn-success">Edit Event</a>
-</div>
-<br>
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading bg-primary text-white mb-5">
-                    Event Calendar
+    <div class="mx-auto col-md-8 col-md-offset-2">
+        <div class="mt-4 row">
+            <a href="/addevent" class="mr-3 square_btn">予定追加</a>
+            <a href="{{ url('/displayevent', $events) }}" class="mr-3 square_btn">予定編集</a>
+        </div>
+        <br>
+        <div class="panel panel-default mb-5">
+            <!-- エラー/成功メッセージ -->
+            @if(count($errors) > 0)
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
-                <div class="panel-body">
-                    <!-- エラー/成功メッセージ -->
-                    @if(count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @elseif(\Session::has('success'))
-                        <div class="alert alert-success">
-                            <p>{{ \Session::get('success') }}</p>
-                        </div>
-                    @endif
-                    {!! $calendar->calendar() !!}
-                    {!! $calendar->script() !!}
+            @elseif(\Session::has('success'))
+                <div class="alert alert-success">
+                    <p>{{ \Session::get('success') }}</p>
                 </div>
-            </div>
+            @endif
+            
+            {!! $calendar->calendar() !!}
+            {!! $calendar->script() !!}
         </div>
     </div>
 @endsection
