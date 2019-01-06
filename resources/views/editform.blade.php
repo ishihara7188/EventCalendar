@@ -14,12 +14,13 @@
                 <input type="color" class="form-control" name="color" placeholder="color" value="{{ $events->color }}" list="data1">
             </div>
             <div class="form-group">
+            <p></p>
                 <label>日時(始)</label>
-                <input type="datetime-local" class="form-control" name="start_date" placeholder="start_date" value="{{ $events->start_date }}">
+                <input type="datetime-local" class="form-control" name="start_date" placeholder="start_date" value="{{ Helper::eventTime($events->start_date) }}">
             </div>
             <div class="form-group">
                 <label>日時(終)</label>
-                <input type="datetime-local" class="form-control" name="end_date" placeholder="end_date" value="{{ $events->end_date }}">
+                <input type="datetime-local" class="form-control" name="end_date" placeholder="end_date" value="{{ Helper::eventTime($events->end_date) }}">
             </div>
             {{ method_field('put') }}
             <button type="submit" name="submit" class="square_btn">更新</button>
