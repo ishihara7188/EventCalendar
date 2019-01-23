@@ -8,3 +8,5 @@ Route::group(['middleware' => 'auth'], function () {
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::redirect('/', '/events'); // /に来たら/eventsに飛ばす。第3引数にHTTPステータスコードを指定可能
